@@ -23,8 +23,8 @@ class SimpleDrivingEnv(gym.Env):
                 low=np.array([-1, -.6], dtype=np.float32),
                 high=np.array([1, .6], dtype=np.float32))
         self.observation_space = gym.spaces.box.Box(
-            low=np.array([-40, -40, -1, -1, -5, -5, -10, -10], dtype=np.float32),
-            high=np.array([40, 40, 1, 1, 5, 5, 10, 10], dtype=np.float32))
+            low=np.array([-40, -40], dtype=np.float32),
+            high=np.array([40, 40], dtype=np.float32))
         self.np_random, _ = gym.utils.seeding.np_random()
 
         if renders:
@@ -47,6 +47,7 @@ class SimpleDrivingEnv(gym.Env):
         self.reset()
         self._envStepCounter = 0
 
+    # Task 3: Attempt to edit step function/ modify reward 
     def step(self, action):
         # Feed action to the car and get observation of car's state
         if (self._isDiscrete):
@@ -79,11 +80,14 @@ class SimpleDrivingEnv(gym.Env):
         reward = -dist_to_goal
         self.prev_dist_to_goal = dist_to_goal
 
-        # Done by reaching goal
+        # The goal is reached if car is within 1.5m of it (aligns with task spec)
         if dist_to_goal < 1.5 and not self.reached_goal:
-            #print("reached goal")
+            #print("reached goal") # kept commented out
             self.done = True
             self.reached_goal = True
+            # If the goal is reached (line above), give a bonus of 50 (as per task specs) 
+            # Assumed I should set it to a positive value (as bonus is added)
+            reward = 50 
 
         ob = car_ob
         return ob, reward, self.done, dict()
@@ -92,6 +96,7 @@ class SimpleDrivingEnv(gym.Env):
         self.np_random, seed = gym.utils.seeding.np_random(seed)
         return [seed]
 
+    # The reset function can be edited to add obstacles to environment (according to task specs - 4)
     def reset(self):
         self._p.resetSimulation()
         self._p.setTimeStep(self._timeStep)
