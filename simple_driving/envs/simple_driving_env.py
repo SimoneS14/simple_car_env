@@ -87,7 +87,8 @@ class SimpleDrivingEnv(gym.Env):
             self.reached_goal = True
             # If the goal is reached (line above), give a bonus of 50 (as per task specs) 
             # Assumed I should set it to a positive value (as bonus is added)
-            reward = 50 
+            # distance to goal reward + 50
+            reward = -dist_to_goal + 50
 
         ob = car_ob
         return ob, reward, self.done, dict()
