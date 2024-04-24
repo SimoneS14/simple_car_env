@@ -88,8 +88,8 @@ class SimpleDrivingEnv(gym.Env):
             # If the goal is reached (line above), give a bonus of 50 (as per task specs) 
             # Assumed I should set it to a positive value (as bonus is added)
             # distance to goal reward + 50
-            # reward = -dist_to_goal + 50 # initially changed to this but it made my model worse
-            reward = 50
+            reward = -dist_to_goal + 50 # initially changed to this but it made my model worse
+            #reward = 50
 
         ob = car_ob
         return ob, reward, self.done, dict()
